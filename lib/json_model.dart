@@ -1,6 +1,10 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'json_model.g.dart';
+
+@JsonSerializable()
 class Person {
   final id;
   final name;
@@ -8,25 +12,19 @@ class Person {
 
   Person({this.id, this.name, this.sex});
 
-  factory Person.fromJson(Map<String, dynamic> json) {
-    return Person(
-        id: json['id'] as String,
-        name: json['name'] as String,
-        sex: json['sex'] as String);
-  }
+  factory Person.fromJson(Map<String, dynamic> json) => _$PersonFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PersonToJson(this);
 }
 
+@JsonSerializable()
 class PersonList {
   List<Person> personList;
   PersonList({this.personList});
 
-  factory PersonList.fromJson(json) {
-    var personListJson = json as List;
+  factory PersonList.fromJson(json) => _$PersonListFromJson(json);
 
-    List<Person> personJson =
-        personListJson.map((i) => Person.fromJson(i)).toList();
-    return PersonList(personList: personJson);
-  }
+  Map<String, dynamic> toJson() => _$PersonListToJson(this);
 }
 
 Future<PersonList> getPersonList() async {
